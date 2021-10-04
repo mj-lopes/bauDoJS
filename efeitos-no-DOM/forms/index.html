@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forms</title>
+</head>
+<body>
+  <style>
+    label {
+      display: block;
+      font-weight: bold;
+      font-family: Arial, Helvetica, sans-serif;
+      margin-top: 1rem;
+      margin-bottom: .5rem;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    input, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: .5rem;
+      border: 2px solid black;
+      font-size: 1rem;
+      margin-bottom: .5rem;
+    }
+
+    textarea {
+      height: 150px;
+      resize: none;
+    }
+
+    .invalido {
+      border-color: red;
+    }
+  </style>
+
+  <form name="contato" id="contato">
+    <label for="nome">Nome</label>
+    <input type="text" name="nome" id="nome" required>
+    <span class="erro"></span>
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" required>
+    <span class="erro"></span>
+    <label for="mensagem">Mensagem</label>
+    <textarea name="mensagem" id="mensagem"></textarea>
+    <select name="cores" id="cores">
+      <option value="black">Preto</option>
+      <option value="white">Branco</option>
+      <option value="blue">Azul</option>
+    </form>  
+    <input type="color">
+    <input type="date">
+    <input type="number">
+    <input type="range">
+    <input type="password">
+
+    <label for="identidade">Possui identidade?</label>
+    <input type="checkbox" value="identidade" name='identidade?' id="identidade">
+    <label for="casado">Casado?</label>
+    <input type="checkbox" value="casado" name='casado?'id="casado">
+
+    <input type="radio" id="guitarra" value="guitarra" name="instrumento" />
+    <label for="guitarra">Guitarra</label>
+  
+    <input type="radio" id="violao" value="violao" name="instrumento" />
+    <label for="violao">Violão</label>
+  
+    <input type="radio" id="baixo" value="baixo" name="instrumento" />
+    <label for="baixo">Baixo</label>
+  
+
+    </select>    
+
+
+  <script>
+
+    // FORMS
+    // É comum utilizarmos inputs de formulários para criarmos uma interface entre funções de JavaScript e o usuário final do site. Para isso precisamos aprender como pegar os valores dos formulários.
+
+    document.forms; // lista com os formulários
+    document.forms.contato; // form com nome contato
+    document.forms.contato.elements; // elementos
+    document.forms[0].elements[0].value; // valor do primeiro
+
+    // VALUES
+    // A propriedade value retorna o valor do elemento no formulário. Se adicionarmos um callback ao keyup (tecla levantar), podemos ficar de olho no evento e puxar o valor sempre que ele mudar. change dispara quando houver mudanças.
+
+
+    const formContato = document.forms[0];
+
+    // function handleKeyUp(event) {
+    //   console.log(event.target);
+    // }
+
+    // formContato.addEventListener('change', handleKeyUp); //keyup tbm funciona
+
+    // VALIDAÇÃO
+    // O método checkValidity verifica se um input com o atributo required, é válido ou não. A propriedade validationMessage possui a mensagem padrão de erro do browser. É possível modicar com setCustomValidity('')
+
+    const form = document.getElementById('contato');
+
+    function handleChange(event) {
+      const target = event.target; // O ELEMENTO DO FORM SELECIONADO
+
+      console.log('ativei', target.checkValidity());
+      if(!target.checkValidity()) {
+        target.classList.add('invalido'); // inclui no input a classe invalido
+        target.setCustomValidity('Esse campo é importante');
+        target.nextElementSibling.innerText = target.validationMessage; // add ao span o texto padrão validação do browser
+        // form.nome.setCustomValidity('O nome é importante'); mensagem personalizada para cada campo
+      } else {
+      console.log('cheguei');
+
+        target.classList.remove('invalido');
+      }
+    }
+
+    form.addEventListener('change', handleChange);
+
+    // SELECT e outros inputs
+
+    // const form = document.getElementById('contato');
+
+    function handleChange(event) {
+      // document.body.style.backgroundColor = event.target.value;
+      console.log(event.target.value);
+    }
+    form.addEventListener('change', handleChange);
+
+    // CHECKBOX
+    // Retorna o valor de value, se estiver checada ou não. checked retorna true ou false.
+
+    // const form = document.getElementById('contato');
+    function handleChange(event) {
+      if(event.target.checked)
+        console.log(event.target.value);
+    }
+    form.addEventListener('change', handleChange);
+
+    // RADIO
+    // A diferença entre Radio e Checkbox é que radio aceita apenas uma seleção por grupo. Radio é agrupado pelo atributo name.
+
+    // const form = document.getElementById('contato');
+    // function handleChange(event) {
+    //   if(event.target.checked)
+    //     console.log(event.target.value);
+    // }
+    // form.addEventListener('change', handleChange);
+
+
+    // PEGANDO TODOS OS VALORES
+    // Ao invés de selecionarmos elemento por elemento, podemos utilizar um objeto para colocarmos todos os dados que o usuário colocar no formulário.
+
+    // const form = document.getElementById('contato');
+    const dados = {};
+    function handleChange(event) {
+      dados[event.target.name] = event.target.value;
+    }
+    form.addEventListener('change', handleChange);
+
+  </script>
+</body>
+</html>
